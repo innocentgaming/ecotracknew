@@ -154,6 +154,7 @@ $$\text{Eco Score} = 100 - \left( \frac{\text{AE} - 500}{7500} \times 100 \right
 ## 🛠️ Technology Stack
 
 - **Framework**: Next.js 16 (Turbopack) & React 19
+- **Testing Framework**: Vitest & React Testing Library (under JSDOM environment)
 - **Data Visualization**: Chart.js & React-Chartjs-2
 - **Mapping**: Leaflet.js & React-Leaflet (using OpenStreetMap tiles)
 - **AI Core**: `@google/generative-ai` (Gemini API integration)
@@ -179,6 +180,15 @@ NEXT_PUBLIC_GEMINI_API_KEY=your_google_gemini_api_key_here
 npm run dev
 ```
 Open **[http://localhost:3000](http://localhost:3000)** in your browser.
+
+### 4. Run Automated Test Suite
+```bash
+# Run unit and integration tests once
+npm run test
+
+# Run tests in interactive watch mode
+npm run test:watch
+```
 
 ---
 

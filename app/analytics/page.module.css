@@ -1,0 +1,64 @@
+.page { min-height: 100vh; }
+.main { padding-top: var(--nav-height); padding-bottom: 48px; }
+.header { padding: 40px 0 24px; text-align: center; }
+
+.metricsRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.metricCard { text-align: center; }
+
+.chartsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.chartWide { grid-column: 1 / -1; }
+
+.chartCard {}
+
+.chartHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.chartArea {
+  position: relative;
+}
+
+.categoryDetail {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.categoryDetail:last-child { border-bottom: none; }
+
+.catIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+@media (max-width: 1024px) {
+  .metricsRow { grid-template-columns: repeat(2, 1fr); }
+  .chartsGrid { grid-template-columns: 1fr; }
+  .chartWide { grid-column: auto; }
+}
+
+@media (max-width: 640px) {
+  .metricsRow { grid-template-columns: repeat(2, 1fr); }
+}

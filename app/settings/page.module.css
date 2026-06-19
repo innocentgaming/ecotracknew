@@ -1,0 +1,78 @@
+.page { min-height: 100vh; }
+.main { padding-top: var(--nav-height); padding-bottom: 48px; }
+.header { padding: 40px 0 24px; text-align: center; }
+
+.settingsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.profileStats {
+  display: flex;
+  gap: 24px;
+}
+
+.profileStat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--bg-glass);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  flex: 1;
+}
+
+.apiStatus {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--bg-glass);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+.statusDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dotActive { background: var(--green-primary); animation: pulse-green 2s infinite; }
+.dotInactive { background: var(--amber); }
+
+.aboutContent {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.aboutItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.saveRow {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+  padding-top: 24px;
+}
+
+.saved {
+  background: rgba(0, 255, 136, 0.2) !important;
+  color: var(--green-primary) !important;
+}
+
+@media (max-width: 640px) {
+  .settingsGrid { grid-template-columns: 1fr; }
+  .profileStats { flex-direction: column; }
+}

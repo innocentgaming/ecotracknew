@@ -1,0 +1,238 @@
+.page { min-height: 100vh; }
+.main { padding-top: var(--nav-height); padding-bottom: 64px; }
+
+.header {
+  padding: 40px 0 32px;
+  text-align: center;
+}
+
+/* My Rank Banner */
+.myRankBanner {
+  background: linear-gradient(135deg, rgba(0,255,136,0.08), rgba(0,229,204,0.04));
+  border: 1px solid rgba(0,255,136,0.25);
+  border-radius: var(--radius-xl);
+  padding: 20px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.myRankBanner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0,255,136,0.03), transparent);
+}
+
+.myRankLeft {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.myRankNum {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-lg);
+  background: rgba(0,255,136,0.1);
+  border: 1px solid rgba(0,255,136,0.3);
+  flex-shrink: 0;
+}
+
+.myRankRight {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.statPill {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 28px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  padding: 6px;
+  width: fit-content;
+}
+
+.tab {
+  padding: 10px 20px;
+  border-radius: var(--radius-full);
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: 'Outfit', sans-serif;
+  color: var(--text-secondary);
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.tab:hover { color: var(--text-primary); }
+
+.tabActive {
+  background: linear-gradient(135deg, var(--green-secondary), var(--green-primary));
+  color: #000 !important;
+  box-shadow: 0 4px 16px rgba(0,255,136,0.3);
+}
+
+/* Podium */
+.podium {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding: 32px 0 0;
+}
+
+.podiumCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  animation: scaleIn 0.5s ease-out both;
+}
+
+.podiumFirst { order: 2; }
+.podiumSecond { order: 1; }
+.podiumThird { order: 3; }
+
+.crownBadge {
+  font-size: 1.8rem;
+  margin-bottom: 4px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.podiumAvatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 2px solid var(--border-active);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+}
+
+.podiumRank {
+  font-size: 1.4rem;
+}
+
+.podiumName {
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-align: center;
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.podiumValue {
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-family: 'Outfit', sans-serif;
+}
+
+.podiumBar {
+  width: 90px;
+  border-radius: 6px 6px 0 0;
+  margin-top: 8px;
+  position: relative;
+  transition: height 0.8s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* Rank List */
+.rankList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rankRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 14px 20px;
+  transition: all var(--transition);
+  animation: rankPop 0.4s ease-out both;
+}
+
+.rankRow:hover {
+  border-color: var(--border-active);
+  background: var(--bg-card-hover);
+  transform: translateX(4px);
+}
+
+.myRow {
+  border-color: rgba(0,255,136,0.3) !important;
+  background: rgba(0,255,136,0.05) !important;
+  box-shadow: 0 0 20px rgba(0,255,136,0.08);
+}
+
+.rankNum {
+  width: 32px;
+  text-align: center;
+  font-weight: 800;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.rankAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg-card-hover);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.rankInfo { flex: 1; }
+
+.rankValue {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+/* Medal colors */
+.gold { color: #ffd700; }
+.silver { color: #c0c0c0; }
+.bronze { color: #cd7f32; }
+
+@media (max-width: 640px) {
+  .myRankBanner { flex-direction: column; align-items: flex-start; }
+  .podium { gap: 8px; }
+  .podiumBar { width: 70px; }
+  .podiumName { font-size: 0.75rem; max-width: 80px; }
+  .tabs { width: 100%; justify-content: center; }
+}

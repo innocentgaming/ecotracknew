@@ -1,0 +1,108 @@
+.page { min-height: 100vh; }
+.main { padding-top: var(--nav-height); padding-bottom: 48px; }
+.header { padding: 40px 0 24px; text-align: center; }
+
+.mapLayout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 24px;
+  height: calc(100vh - 280px);
+  min-height: 500px;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.layerSection {}
+
+.layerToggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all var(--transition);
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+.layerToggle:hover { border-color: var(--color, var(--border-active)); }
+.layerActive { border-color: var(--color, var(--green-primary)) !important; background: rgba(0,255,136,0.04); }
+
+.layerLeft { display: flex; align-items: center; gap: 10px; }
+.layerIcon { font-size: 1.2rem; }
+.layerLabel { font-size: 0.875rem; font-weight: 600; color: var(--text-primary); }
+.layerDesc { font-size: 0.7rem; color: var(--text-muted); }
+
+.layerCheck {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+  transition: all var(--transition);
+  color: transparent;
+}
+
+.layerCheckActive {
+  background: var(--color, var(--green-primary));
+  border-color: var(--color, var(--green-primary));
+  color: #000;
+}
+
+.infoSection {}
+
+.tipCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px;
+  border-radius: var(--radius);
+  background: var(--bg-glass);
+  margin-bottom: 8px;
+}
+
+.tipEmoji { font-size: 1.2rem; flex-shrink: 0; }
+.tipTitle { font-size: 0.8rem; font-weight: 600; color: var(--text-primary); }
+.tipDesc { font-size: 0.7rem; color: var(--text-muted); }
+
+.mapContainer {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.mapLoading {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  color: var(--text-muted);
+  gap: 12px;
+}
+
+.mapLoadingSpinner { font-size: 3rem; animation: spin 2s linear infinite; }
+
+@media (max-width: 768px) {
+  .mapLayout {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  .mapContainer { height: 400px; }
+}

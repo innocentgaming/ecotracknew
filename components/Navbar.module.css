@@ -1,0 +1,291 @@
+/* =============================================
+   NAVBAR — Premium Edition
+   ============================================= */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: var(--nav-height);
+  background: rgba(6, 13, 8, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: all var(--transition);
+}
+
+.scrolled {
+  background: rgba(6, 13, 8, 0.92);
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.4), 0 1px 0 rgba(0, 255, 136, 0.08);
+}
+
+.inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.logoIcon {
+  font-size: 1.4rem;
+  filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));
+}
+
+.logoText {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--green-primary), var(--lime), var(--teal));
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 4s ease infinite;
+}
+
+.logoBadge {
+  font-size: 0.6rem;
+  font-weight: 800;
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: 0.05em;
+  background: linear-gradient(135deg, #c8890a, #ffd700);
+  color: #000;
+  padding: 2px 6px;
+  border-radius: 4px;
+  align-self: flex-start;
+  margin-top: 2px;
+}
+
+/* Nav Links */
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.navLinks::-webkit-scrollbar { display: none; }
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 500;
+  font-family: 'Outfit', sans-serif;
+  transition: all var(--transition);
+  white-space: nowrap;
+  position: relative;
+}
+
+.navLink:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.navLink.active {
+  color: var(--green-primary);
+  background: rgba(0, 255, 136, 0.08);
+}
+
+.navIcon { font-size: 0.9rem; }
+.navLabel {}
+
+.activeDot {
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--green-primary);
+  box-shadow: 0 0 6px rgba(0, 255, 136, 0.8);
+}
+
+/* Right Actions */
+.rightActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Notification Button */
+.notifBtn {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.notifBtn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--border-active);
+}
+
+.notifDot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--red);
+  border: 2px solid var(--bg-primary);
+  animation: notificationPulse 2s ease-in-out infinite;
+}
+
+/* Profile Badge */
+.profileBadge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  background: rgba(0, 255, 136, 0.06);
+  border: 1px solid var(--border);
+  transition: all var(--transition);
+  text-decoration: none;
+}
+
+.profileBadge:hover {
+  background: rgba(0, 255, 136, 0.12);
+  border-color: var(--border-active);
+}
+
+.levelEmoji { font-size: 1.2rem; }
+
+.profileInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.profileName {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: 'Outfit', sans-serif;
+}
+
+.profileLevel {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+
+.profilePoints {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--amber);
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Mobile Toggle */
+.menuToggle {
+  display: none;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.hamburger,
+.hamburger::before,
+.hamburger::after {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  position: absolute;
+}
+
+.hamburger::before { content: ''; top: -5px; left: 0; }
+.hamburger::after { content: ''; bottom: -5px; left: 0; }
+
+.hamburger.open { background: transparent; }
+.hamburger.open::before { transform: rotate(45deg) translate(3.5px, 3.5px); }
+.hamburger.open::after { transform: rotate(-45deg) translate(3.5px, -3.5px); }
+
+/* Mobile Menu */
+.mobileMenu {
+  background: rgba(6, 13, 8, 0.97);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  animation: slideIn 0.2s ease-out;
+}
+
+.mobileLink {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+.mobileLink:hover,
+.mobileLink.active {
+  background: rgba(0, 255, 136, 0.08);
+  color: var(--green-primary);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .navLabel { display: none; }
+  .navLink { padding: 8px; }
+  .profileInfo { display: none; }
+}
+
+@media (max-width: 900px) {
+  .navLinks { display: none; }
+  .menuToggle { display: flex; }
+  .notifBtn { display: none; }
+}
+
+@media (max-width: 480px) {
+  .inner { padding: 0 16px; gap: 12px; }
+  .profileBadge { padding: 6px 10px; }
+  .profilePoints { display: none; }
+}

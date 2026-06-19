@@ -21,8 +21,25 @@ export default function SettingsPage() {
   }, []);
 
   const handleSave = () => {
-    saveSettings(settings);
-    saveUserProfile(profile);
+    const trimmedName = (profile.name || '').trim();
+    if (!trimmedName) {
+      alert('⚠️ Display Name cannot be empty.');
+      return;
+    }
+    if (trimmedName.length > 50) {
+      alert('⚠️ Display Name is too long (max 50 characters).');
+      return;
+    }
+    const updatedProfile = { ...profile, name: trimmedName };
+    const updatedSettings = {
+      ...settings,
+      geminiApiKey: (settings.geminiApiKey || '').trim()
+    };
+
+    saveSettings(updatedSettings);
+    saveUserProfile(updatedProfile);
+    setProfile(updatedProfile);
+    setSettings(updatedSettings);
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
   };
@@ -57,7 +74,7 @@ export default function SettingsPage() {
               <h2 className="heading-2" style={{ marginBottom: '20px' }}>👤 Your Profile</h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div className="form-group">
-                  <label className="form-label">Display Name</label>
+                  <label className="form-label" htmlFor="profile-name-input">Display Name</label>
                   <input
                     type="text"
                     className="form-input"
@@ -95,7 +112,7 @@ export default function SettingsPage() {
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div className="form-group">
-                  <label className="form-label">Google Gemini API Key</label>
+                  <label className="form-label" htmlFor="gemini-api-key-input">Google Gemini API Key</label>
                   <div style={{ display: 'flex', gap: '8px' }}>
                     <input
                       type={showKey ? 'text' : 'password'}
@@ -108,6 +125,7 @@ export default function SettingsPage() {
                     <button
                       className="btn btn-secondary"
                       onClick={() => setShowKey(!showKey)}
+                      aria-label={showKey ? "Hide API key" : "Show API key"}
                     >
                       {showKey ? '🙈' : '👁️'}
                     </button>

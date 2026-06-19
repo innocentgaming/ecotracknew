@@ -79,8 +79,34 @@ export default function JournalPage() {
   const filteredEntries = filter === 'all' ? entries : entries.filter(e => e.category === filter);
 
   const handleAdd = () => {
-    const action = selectedAction || { label: customAction, co2Saved: parseFloat(customCo2) || 0, points: Math.ceil((parseFloat(customCo2) || 0) * 5) };
-    if (!action.label) return;
+    let action;
+    if (selectedAction) {
+      action = selectedAction;
+    } else {
+      const label = (customAction || '').trim();
+      if (!label) {
+        alert('⚠️ Please select an action or enter a custom action description.');
+        return;
+      }
+      if (label.length > 100) {
+        alert('⚠️ Custom action description is too long (max 100 characters).');
+        return;
+      }
+      const rawCo2 = parseFloat(customCo2);
+      if (isNaN(rawCo2) || rawCo2 < 0) {
+        alert('⚠️ Please enter a valid non-negative number for CO₂ saved.');
+        return;
+      }
+      if (rawCo2 > 10000) {
+        alert('⚠️ CO₂ saved value must be less than 10,000 kg.');
+        return;
+      }
+      action = {
+        label,
+        co2Saved: rawCo2,
+        points: Math.ceil(rawCo2 * 5),
+      };
+    }
 
     const newEntry = {
       category: selectedCategory,
@@ -238,14 +264,16 @@ export default function JournalPage() {
 
                   {/* Custom Action */}
                   <div style={{ marginTop: '12px' }}>
-                    <p className="caption text-muted" style={{ marginBottom: '8px' }}>Or enter a custom action:</p>
+                    <label className="caption text-muted" style={{ marginBottom: '8px', display: 'block' }} htmlFor="custom-action-desc">Or enter a custom action:</label>
                     <div style={{ display: 'flex', gap: '8px' }}>
                       <input
+                        id="custom-action-desc"
                         type="text"
                         className="form-input"
                         placeholder="What did you do?"
                         value={customAction}
                         onChange={e => { setCustomAction(e.target.value); setSelectedAction(null); }}
+                        aria-label="Custom action description"
                       />
                       <input
                         type="number"
@@ -254,6 +282,7 @@ export default function JournalPage() {
                         value={customCo2}
                         onChange={e => setCustomCo2(e.target.value)}
                         style={{ width: '120px', flexShrink: 0 }}
+                        aria-label="Custom action CO2 saved in kilograms"
                       />
                     </div>
                   </div>
@@ -312,6 +341,7 @@ export default function JournalPage() {
                         className={styles.deleteBtn}
                         onClick={() => handleDelete(entry.id)}
                         title="Remove entry"
+                        aria-label="Remove journal entry"
                       >
                         ✕
                       </button>

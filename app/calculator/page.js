@@ -225,10 +225,11 @@ function TransportStep({ data, update }) {
 
       <div className={styles.sliderGroup}>
         <div className="form-group">
-          <label className="form-label">
+          <label className="form-label" htmlFor="transport-daily-distance">
             Daily commute distance: <strong className="text-accent">{data.dailyDistance} km</strong>
           </label>
           <input
+            id="transport-daily-distance"
             type="range"
             className="range-input"
             min="1" max="100" value={data.dailyDistance}
@@ -238,10 +239,11 @@ function TransportStep({ data, update }) {
         </div>
 
         <div className="form-group">
-          <label className="form-label">
+          <label className="form-label" htmlFor="transport-flight-hours">
             Flight hours per year: <strong className="text-accent">{data.flightHoursPerYear} hrs</strong>
           </label>
           <input
+            id="transport-flight-hours"
             type="range"
             className="range-input"
             min="0" max="50" value={data.flightHoursPerYear}
@@ -251,10 +253,11 @@ function TransportStep({ data, update }) {
         </div>
 
         <div className="form-group">
-          <label className="form-label">
+          <label className="form-label" htmlFor="transport-commute-days">
             Days commuting per month: <strong className="text-accent">{data.commuteFrequency} days</strong>
           </label>
           <input
+            id="transport-commute-days"
             type="range"
             className="range-input"
             min="0" max="30" value={data.commuteFrequency}
@@ -272,10 +275,11 @@ function EnergyStep({ data, update }) {
     <div className={styles.stepContent}>
       <div className={styles.sliderGroup}>
         <div className="form-group">
-          <label className="form-label">
+          <label className="form-label" htmlFor="energy-monthly-bill">
             Monthly electricity bill: <strong className="text-accent">₹{data.monthlyBill}</strong>
           </label>
           <input
+            id="energy-monthly-bill"
             type="range"
             className="range-input"
             min="100" max="5000" step="50" value={data.monthlyBill}
@@ -285,10 +289,11 @@ function EnergyStep({ data, update }) {
         </div>
 
         <div className="form-group">
-          <label className="form-label">
+          <label className="form-label" htmlFor="energy-ac-hours">
             AC usage per day: <strong className="text-accent">{data.acHoursPerDay} hours</strong>
           </label>
           <input
+            id="energy-ac-hours"
             type="range"
             className="range-input"
             min="0" max="16" value={data.acHoursPerDay}
@@ -298,10 +303,11 @@ function EnergyStep({ data, update }) {
         </div>
 
         <div className="form-group">
-          <label className="form-label">
+          <label className="form-label" htmlFor="energy-ac-months">
             AC months per year: <strong className="text-accent">{data.acMonthsPerYear} months</strong>
           </label>
           <input
+            id="energy-ac-months"
             type="range"
             className="range-input"
             min="0" max="12" value={data.acMonthsPerYear}
@@ -358,10 +364,11 @@ function FoodStep({ data, update }) {
 
       <div className={styles.sliderGroup}>
         <div className="form-group">
-          <label className="form-label">
+          <label className="form-label" htmlFor="food-meals-per-day">
             Meals per day: <strong className="text-accent">{data.mealsPerDay}</strong>
           </label>
           <input
+            id="food-meals-per-day"
             type="range"
             className="range-input"
             min="1" max="5" value={data.mealsPerDay}
@@ -371,10 +378,11 @@ function FoodStep({ data, update }) {
         </div>
 
         <div className="form-group">
-          <label className="form-label">
+          <label className="form-label" htmlFor="food-waste-weight">
             Food waste per week: <strong className="text-accent">{data.foodWasteKgPerWeek} kg</strong>
           </label>
           <input
+            id="food-waste-weight"
             type="range"
             className="range-input"
             min="0" max="10" step="0.5" value={data.foodWasteKgPerWeek}
@@ -392,10 +400,11 @@ function ShoppingStep({ data, update }) {
     <div className={styles.stepContent}>
       <div className={styles.sliderGroup}>
         <div className="form-group">
-          <label className="form-label">
+          <label className="form-label" htmlFor="shopping-clothing-items">
             Clothing items purchased per month: <strong className="text-accent">{data.clothingItemsPerMonth}</strong>
           </label>
           <input
+            id="shopping-clothing-items"
             type="range"
             className="range-input"
             min="0" max="20" value={data.clothingItemsPerMonth}
@@ -405,10 +414,11 @@ function ShoppingStep({ data, update }) {
         </div>
 
         <div className="form-group">
-          <label className="form-label">
+          <label className="form-label" htmlFor="shopping-online-orders">
             Online deliveries per month: <strong className="text-accent">{data.onlineOrdersPerMonth}</strong>
           </label>
           <input
+            id="shopping-online-orders"
             type="range"
             className="range-input"
             min="0" max="30" value={data.onlineOrdersPerMonth}
@@ -444,10 +454,11 @@ function WasteStep({ data, update }) {
     <div className={styles.stepContent}>
       <div className={styles.sliderGroup}>
         <div className="form-group">
-          <label className="form-label">
+          <label className="form-label" htmlFor="waste-weekly-weight">
             Waste generated per week: <strong className="text-accent">{data.wasteKgPerWeek} kg</strong>
           </label>
           <input
+            id="waste-weekly-weight"
             type="range"
             className="range-input"
             min="0.5" max="15" step="0.5" value={data.wasteKgPerWeek}
@@ -457,10 +468,11 @@ function WasteStep({ data, update }) {
         </div>
 
         <div className="form-group">
-          <label className="form-label">
+          <label className="form-label" htmlFor="waste-recycling-percentage">
             Recycling rate: <strong className="text-accent">{data.recyclingPercentage}%</strong>
           </label>
           <input
+            id="waste-recycling-percentage"
             type="range"
             className="range-input"
             min="0" max="100" value={data.recyclingPercentage}

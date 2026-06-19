@@ -83,8 +83,19 @@ export default function ChatPage() {
     }
   }
 
+  function escapeHtml(text) {
+    if (!text) return '';
+    return text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
   function formatMessage(content) {
-    return content
+    const escaped = escapeHtml(content);
+    return escaped
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/\n/g, '<br/>');
   }
@@ -206,12 +217,14 @@ export default function ChatPage() {
                   placeholder="Ask EcoBot anything about carbon footprint..."
                   rows={1}
                   id="chat-input"
+                  aria-label="Ask EcoBot anything about carbon footprint..."
                 />
                 <button
                   className={styles.sendBtn}
                   onClick={() => handleSend()}
                   disabled={loading || !input.trim()}
                   id="send-chat-btn"
+                  aria-label="Send message"
                 >
                   {loading ? '⏳' : '🌿'}
                 </button>

@@ -42,7 +42,7 @@ export default function Navbar() {
       <div className={styles.inner}>
         {/* Logo */}
         <Link href="/" className={styles.logo}>
-          <span className={styles.logoIcon}>🌿</span>
+          <span className={styles.logoIcon} aria-hidden="true">🌿</span>
           <span className={styles.logoText}>EcoTrack</span>
           <span className={styles.logoBadge}>PRO</span>
         </Link>
@@ -55,7 +55,7 @@ export default function Navbar() {
               href={link.href}
               className={`${styles.navLink} ${pathname === link.href ? styles.active : ''}`}
             >
-              <span className={styles.navIcon}>{link.icon}</span>
+              <span className={styles.navIcon} aria-hidden="true">{link.icon}</span>
               <span className={styles.navLabel}>{link.label}</span>
               {pathname === link.href && <span className={styles.activeDot} />}
             </Link>
@@ -65,16 +65,21 @@ export default function Navbar() {
         {/* Right Actions */}
         <div className={styles.rightActions}>
           {/* Notification Bell */}
-          <div className={styles.notifBtn} title="Eco Tips">
-            <span>🔔</span>
-            <span className={styles.notifDot} />
-          </div>
+          <button
+            className={styles.notifBtn}
+            title="Eco Tips"
+            aria-label="Eco Tips"
+            style={{ outline: 'none', color: 'inherit' }}
+          >
+            <span aria-hidden="true">🔔</span>
+            <span className={styles.notifDot} aria-hidden="true" />
+          </button>
 
           {/* Profile Badge */}
-          <Link href="/settings" className={styles.profileBadge}>
+          <Link href="/settings" className={styles.profileBadge} aria-label={`View settings for ${profile?.name || 'Eco Warrior'}`}>
             {level && (
               <>
-                <span className={styles.levelEmoji}>{level.emoji}</span>
+                <span className={styles.levelEmoji} aria-hidden="true">{level.emoji}</span>
                 <div className={styles.profileInfo}>
                   <span className={styles.profileName}>{profile?.name || 'Eco Warrior'}</span>
                   <span className={styles.profileLevel}>{level.name}</span>
@@ -82,7 +87,7 @@ export default function Navbar() {
                 <span className={styles.profilePoints}>{profile?.points || 0} pts</span>
               </>
             )}
-            {!level && <span className={styles.levelEmoji}>🌱</span>}
+            {!level && <span className={styles.levelEmoji} aria-hidden="true">🌱</span>}
           </Link>
         </div>
 
@@ -106,7 +111,7 @@ export default function Navbar() {
               className={`${styles.mobileLink} ${pathname === link.href ? styles.active : ''}`}
               onClick={() => setMenuOpen(false)}
             >
-              <span>{link.icon}</span>
+              <span aria-hidden="true">{link.icon}</span>
               <span>{link.label}</span>
             </Link>
           ))}

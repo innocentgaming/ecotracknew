@@ -184,6 +184,7 @@ function BudgetTracker({ totalEmissions }) {
         <button
           className="btn btn-secondary btn-sm"
           onClick={() => { setEditing(!editing); setTempTarget(String(budget.monthlyTarget)); }}
+          aria-label={editing ? "Cancel editing goal" : "Set monthly CO₂ target goal"}
         >
           {editing ? '✕' : '✏️ Set Goal'}
         </button>
@@ -192,12 +193,14 @@ function BudgetTracker({ totalEmissions }) {
       {editing && (
         <div className={styles.budgetEdit}>
           <input
+            id="budget-goal-input"
             type="number"
             className="form-input"
             value={tempTarget}
             onChange={e => setTempTarget(e.target.value)}
             placeholder="Enter monthly CO₂ budget (kg)"
             autoFocus
+            aria-label="Enter monthly CO₂ budget in kilograms"
           />
           <button className="btn btn-primary btn-sm" onClick={handleSave}>Save</button>
         </div>
@@ -322,6 +325,7 @@ function GoalsPanel() {
                 className={styles.goalCheck}
                 onClick={() => handleToggle(goal.id)}
                 title="Mark as complete"
+                aria-label={`Mark goal "${goal.title}" as complete`}
               >
                 ○
               </button>
@@ -342,7 +346,7 @@ function GoalsPanel() {
                   </span>
                   <div className="caption" style={{ color: 'var(--green-primary)' }}>+{goal.reward} pts earned 🎉</div>
                 </div>
-                <button className={styles.goalCheck} style={{ color: 'var(--green-primary)' }} onClick={() => handleToggle(goal.id)}>✓</button>
+                 <button className={styles.goalCheck} style={{ color: 'var(--green-primary)' }} onClick={() => handleToggle(goal.id)} aria-label={`Mark goal "${goal.title}" as incomplete`}>✓</button>
               </div>
             ))}
           </>
@@ -502,7 +506,7 @@ export default function Dashboard() {
                         <span>{cat.emoji} {cat.label}</span>
                         <span style={{ color: cat.color, fontWeight: 600 }}>{cat.value.toFixed(0)} kg</span>
                       </div>
-                      <div className="progress-bar-container">
+                      <div className="progress-bar-container" role="progressbar" aria-valuenow={cat.value} aria-valuemin={0} aria-valuemax={maxCategory} aria-label={`${cat.label} emissions: ${cat.value.toFixed(0)} kg`}>
                         <div
                           className="progress-bar-fill"
                           style={{
@@ -674,7 +678,7 @@ function ComparisonBar({ label, value, max, color, isYou }) {
           {(value / 1000).toFixed(1)} t/yr
         </span>
       </div>
-      <div className="progress-bar-container" style={{ height: '10px' }}>
+      <div className="progress-bar-container" style={{ height: '10px' }} role="progressbar" aria-valuenow={value} aria-valuemin={0} aria-valuemax={max} aria-label={`${label} progress: ${(value/1000).toFixed(1)} tonnes per year`}>
         <div
           style={{
             height: '100%',

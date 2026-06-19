@@ -3,17 +3,26 @@ import { useEffect, useRef } from 'react';
 import styles from './CarbonRing.module.css';
 
 export default function CarbonRing({ score, total, scoreInfo }) {
-  const circleRef = useRef(null);
+  const glowCircleRef = useRef(null);
+  const mainCircleRef = useRef(null);
   const radius = 80;
   const circumference = 2 * Math.PI * radius;
   const dashOffset = circumference - (score / 100) * circumference;
 
   useEffect(() => {
-    if (circleRef.current) {
-      circleRef.current.style.strokeDashoffset = circumference;
+    if (glowCircleRef.current) {
+      glowCircleRef.current.style.strokeDashoffset = circumference;
       setTimeout(() => {
-        if (circleRef.current) {
-          circleRef.current.style.strokeDashoffset = dashOffset;
+        if (glowCircleRef.current) {
+          glowCircleRef.current.style.strokeDashoffset = dashOffset;
+        }
+      }, 300);
+    }
+    if (mainCircleRef.current) {
+      mainCircleRef.current.style.strokeDashoffset = circumference;
+      setTimeout(() => {
+        if (mainCircleRef.current) {
+          mainCircleRef.current.style.strokeDashoffset = dashOffset;
         }
       }, 300);
     }
@@ -30,8 +39,12 @@ export default function CarbonRing({ score, total, scoreInfo }) {
   const color = getColor();
 
   return (
-    <div className={styles.container}>
-      <div className={styles.ringWrapper}>
+    <div
+      className={styles.container}
+      role="img"
+      aria-label={`Carbon Ring Indicator: Eco Score is ${score}/100, ranking you as a ${scoreInfo?.label || 'Eco Warrior'}. Monthly emissions are ${(total/1000).toFixed(2)} tonnes, estimating to ${(total*12/1000).toFixed(1)} tonnes annually.`}
+    >
+      <div className={styles.ringWrapper} aria-hidden="true">
         <svg
           width="220"
           height="220"
@@ -60,7 +73,7 @@ export default function CarbonRing({ score, total, scoreInfo }) {
             strokeLinecap="round"
             transform="rotate(-90 110 110)"
             filter="url(#glow)"
-            ref={circleRef}
+            ref={glowCircleRef}
             className={styles.progressCircle}
             opacity="0.3"
           />
@@ -76,7 +89,7 @@ export default function CarbonRing({ score, total, scoreInfo }) {
             strokeDashoffset={dashOffset}
             strokeLinecap="round"
             transform="rotate(-90 110 110)"
-            ref={circleRef}
+            ref={mainCircleRef}
             className={styles.progressCircle}
           />
           {/* Tick marks */}
@@ -122,7 +135,7 @@ export default function CarbonRing({ score, total, scoreInfo }) {
       </div>
 
       {/* Stats below ring */}
-      <div className={styles.ringStats}>
+      <div className={styles.ringStats} aria-hidden="true">
         <div className={styles.ringStat}>
           <span className={styles.ringStatValue}>{(total / 1000).toFixed(2)}</span>
           <span className={styles.ringStatLabel}>t CO₂/mo</span>

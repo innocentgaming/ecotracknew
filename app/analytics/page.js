@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import Navbar from '@/components/Navbar';
 import { loadHistory, generateMockHistory, loadResults } from '@/lib/storage';
-import { INDIA_AVERAGE_ANNUAL, GLOBAL_AVERAGE_ANNUAL } from '@/lib/carbonCalculator';
+import { INDIA_AVERAGE_ANNUAL, GLOBAL_AVERAGE_ANNUAL, calculateSustainabilitySubScores, predictFutureFootprint } from '@/lib/carbonCalculator';
 import styles from './page.module.css';
 
 // Dynamically import chart components to avoid SSR issues
@@ -42,6 +42,8 @@ export default function AnalyticsPage() {
 
   const monthlyTotal = currentResults.total;
   const annualTotal = monthlyTotal * 12;
+  const subScores = calculateSustainabilitySubScores(currentResults);
+  const predictedNext = predictFutureFootprint(history);
 
   // Pie chart data
   const pieData = {
@@ -280,6 +282,61 @@ export default function AnalyticsPage() {
                   </div>
                 );
               })}
+            </div>
+
+            {/* AI Sustainability Analysis Card */}
+            <div className={`card ${styles.chartCard}`}>
+              <h2 className="heading-2" style={{ marginBottom: '16px' }}>🤖 AI Sustainability Analysis</h2>
+              
+              {/* Sustainability Scores */}
+              <div style={{ marginBottom: '20px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                  <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>Overall Sustainability Index</span>
+                  <span className="badge badge-green" style={{ fontSize: '1rem', fontWeight: 800 }}>{subScores.overall}/100</span>
+                </div>
+                <div className="progress-bar-container" style={{ height: '8px' }} role="progressbar" aria-valuenow={subScores.overall} aria-valuemin={0} aria-valuemax={100} aria-label="Overall sustainability index progress">
+                  <div className="progress-bar-fill" style={{ width: `${subScores.overall}%`, background: 'var(--green-primary)' }} />
+                </div>
+              </div>
+
+              {/* Sub-score grid */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px', marginBottom: '20px' }}>
+                {categories.map(cat => (
+                  <div key={cat} style={{ background: 'rgba(255,255,255,0.02)', padding: '10px', borderRadius: '8px', border: '1px solid var(--border)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', marginBottom: '4px' }}>
+                      <span style={{ textTransform: 'capitalize' }}>{categoryEmojis[cat]} {cat}</span>
+                      <strong style={{ color: subScores[cat] > 70 ? 'var(--green-primary)' : subScores[cat] > 40 ? 'var(--amber)' : 'var(--red)' }}>{subScores[cat]}</strong>
+                    </div>
+                    <div className="progress-bar-container" style={{ height: '4px' }} role="progressbar" aria-valuenow={subScores[cat]} aria-valuemin={0} aria-valuemax={100} aria-label={`${cat} sustainability score`}>
+                      <div className="progress-bar-fill" style={{ width: `${subScores[cat]}%`, background: subScores[cat] > 70 ? 'var(--green-primary)' : subScores[cat] > 40 ? 'var(--amber)' : 'var(--red)' }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* AI Prediction Model */}
+              <div style={{ borderTop: '1px solid var(--border)', paddingTop: '16px' }}>
+                <h3 className="heading-3" style={{ fontSize: '0.9rem', marginBottom: '6px' }}>🔮 AI Monthly Trend Projection</h3>
+                {predictedNext !== null ? (
+                  <div>
+                    <p className="body-sm text-secondary" style={{ marginBottom: '8px' }}>
+                      Based on your last {history.length} months, our predictive model projects next month's carbon footprint to be:
+                    </p>
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+                      <span style={{ fontSize: '1.8rem', fontWeight: 800, color: predictedNext < monthlyTotal ? 'var(--green-primary)' : 'var(--amber)' }}>
+                        {predictedNext} kg CO₂
+                      </span>
+                      <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                        {predictedNext < monthlyTotal ? '📉 Downward trend projection' : '📈 Upward trend projection'}
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="body-sm text-muted">
+                    📊 Complete next month's calculator log to enable future trend forecasts.
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         </div>

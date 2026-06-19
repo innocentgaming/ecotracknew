@@ -11,9 +11,8 @@ import {
   getEcoScore,
   getScoreLabel,
 } from '@/lib/carbonCalculator';
-import { saveCalculatorData, saveResults } from '@/lib/storage';
-import { getRuleBasedSuggestions, getGeminiSuggestions } from '@/lib/aiSuggestions';
-import { loadSettings } from '@/lib/storage';
+import { saveCalculatorData, saveResults, saveAdvisorReport, loadSettings } from '@/lib/storage';
+import { getAIAdvisorReport } from '@/lib/aiSuggestions';
 import styles from './page.module.css';
 
 const STEPS = [
@@ -28,7 +27,7 @@ export default function Calculator() {
   const [currentStep, setCurrentStep] = useState(0);
   const [showResults, setShowResults] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [suggestions, setSuggestions] = useState([]);
+  const [advisorReport, setAdvisorReport] = useState(null);
 
   const [data, setData] = useState({
     transport: {
@@ -85,9 +84,9 @@ export default function Calculator() {
     saveResults(r);
 
     const settings = loadSettings();
-    const aiSuggestions = await getGeminiSuggestions(data, total, settings.geminiApiKey);
-    const ruleSuggestions = getRuleBasedSuggestions(data);
-    setSuggestions(aiSuggestions || ruleSuggestions);
+    const report = await getAIAdvisorReport(data, total, settings.geminiApiKey);
+    setAdvisorReport(report);
+    saveAdvisorReport(report);
 
     setLoading(false);
     setShowResults(true);
@@ -182,7 +181,7 @@ export default function Calculator() {
               </div>
             </>
           ) : (
-            <Results results={results} suggestions={suggestions} onRecalculate={() => { setShowResults(false); setCurrentStep(0); }} />
+            <Results results={results} advisorReport={advisorReport} onRecalculate={() => { setShowResults(false); setCurrentStep(0); }} />
           )}
         </div>
       </main>
@@ -505,7 +504,7 @@ function WasteStep({ data, update }) {
 
 // ─── Results Component ───────────────────────────────────────────────────────
 
-function Results({ results, suggestions, onRecalculate }) {
+function Results({ results, advisorReport, onRecalculate }) {
   const score = getEcoScore(results.total);
   const scoreInfo = getScoreLabel(score);
 
@@ -547,7 +546,7 @@ function Results({ results, suggestions, onRecalculate }) {
                   <span>{cat.emoji} {cat.label}</span>
                   <span style={{ color: cat.color }}>{results[cat.key].toFixed(0)} kg</span>
                 </div>
-                <div className="progress-bar-container" style={{ height: '10px' }}>
+                <div className="progress-bar-container" style={{ height: '10px' }} role="progressbar" aria-valuenow={results[cat.key]} aria-valuemin={0} aria-valuemax={results.total} aria-label={`${cat.label} breakdown progress`}>
                   <div
                     className="progress-bar-fill"
                     style={{ width: `${pct}%`, background: cat.color, boxShadow: `0 0 8px ${cat.color}66` }}
@@ -562,14 +561,59 @@ function Results({ results, suggestions, onRecalculate }) {
         </div>
       </div>
 
+      {/* AI Advisor Assessment */}
+      {advisorReport?.analysis && (
+        <div className="card card-shimmer" style={{ marginBottom: '24px' }}>
+          <h3 className="heading-2" style={{ color: 'var(--green-primary)', marginBottom: '8px' }}>🤖 AI Advisor Assessment</h3>
+          <p className="body">{advisorReport.analysis}</p>
+        </div>
+      )}
+
+      {/* Alternatives */}
+      {advisorReport?.alternatives && advisorReport.alternatives.length > 0 && (
+        <div className="card" style={{ marginBottom: '24px' }}>
+          <h3 className="heading-2" style={{ color: 'var(--green-primary)', marginBottom: '16px' }}>🔄 Sustainable Alternatives</h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {advisorReport.alternatives.map((alt, i) => (
+              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.02)', padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--border)' }}>
+                <div>
+                  <span style={{ textDecoration: 'line-through', color: 'var(--text-muted)', fontSize: '0.85rem' }}>{alt.original}</span>
+                  <span style={{ margin: '0 8px', color: 'var(--green-primary)' }}>→</span>
+                  <strong style={{ fontSize: '0.9rem' }}>{alt.alternative}</strong>
+                </div>
+                <span className="badge badge-green" style={{ fontSize: '0.75rem' }}>{alt.benefit}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Recommended Goals */}
+      {advisorReport?.monthlyGoals && advisorReport.monthlyGoals.length > 0 && (
+        <div className="card" style={{ marginBottom: '24px' }}>
+          <h3 className="heading-2" style={{ color: 'var(--green-primary)', marginBottom: '16px' }}>🎯 Recommended Monthly Goals</h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {advisorReport.monthlyGoals.map((goal, i) => (
+              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.02)', padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--border)' }}>
+                <div>
+                  <strong style={{ fontSize: '0.9rem' }}>{goal.title}</strong>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{goal.description}</div>
+                </div>
+                <span className="badge badge-amber">+{goal.reward} pts</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* AI Suggestions */}
-      {suggestions.length > 0 && (
+      {advisorReport?.suggestions && advisorReport.suggestions.length > 0 && (
         <div className={styles.suggestionsSection}>
           <h3 className="heading-1" style={{ marginBottom: '20px' }}>
             🤖 AI-Powered Suggestions
           </h3>
           <div className={styles.suggestionsList}>
-            {suggestions.map((s, i) => (
+            {advisorReport.suggestions.map((s, i) => (
               <div key={i} className={styles.suggestionCard} style={{ '--delay': `${i * 0.1}s` }}>
                 <div className={styles.suggestionHeader}>
                   <span className={`badge ${s.difficulty === 'Easy' ? 'badge-green' : s.difficulty === 'Medium' ? 'badge-amber' : 'badge-red'}`}>

@@ -10,6 +10,8 @@ import {
   getScoreLabel,
   getComparisonText,
   EMISSION_FACTORS,
+  calculateSustainabilitySubScores,
+  predictFutureFootprint,
 } from '@/lib/carbonCalculator';
 
 describe('Carbon Footprint Calculator Engine', () => {
@@ -182,6 +184,60 @@ describe('Carbon Footprint Calculator Engine', () => {
       const comparison = getComparisonText(100); // 1200 kg annual
       expect(comparison.betterThanIndia).toBe(true);
       expect(comparison.betterThanGlobal).toBe(true);
+    });
+  });
+
+  describe('calculateSustainabilitySubScores', () => {
+    it('calculates default scores when results are missing', () => {
+      const subScores = calculateSustainabilitySubScores(null);
+      expect(subScores.transport).toBe(50);
+      expect(subScores.energy).toBe(50);
+      expect(subScores.overall).toBe(50);
+    });
+
+    it('calculates correct subscores for a set of emissions', () => {
+      const results = {
+        transport: 100, // 1200 kg/year -> 1200/3000 = 40% -> score 60
+        energy: 50,    // 600 kg/year -> 600/2500 = 24% -> score 76
+        food: 100,    // 1200 kg/year -> 1200/3000 = 40% -> score 60
+        shopping: 20,  // 240 kg/year -> 240/1200 = 20% -> score 80
+        waste: 10,     // 120 kg/year -> 120/800 = 15% -> score 85
+      };
+      const subScores = calculateSustainabilitySubScores(results);
+      expect(subScores.transport).toBe(60);
+      expect(subScores.energy).toBe(76);
+      expect(subScores.food).toBe(60);
+      expect(subScores.shopping).toBe(80);
+      expect(subScores.waste).toBe(85);
+      expect(subScores.overall).toBe(Math.round((60 + 76 + 60 + 80 + 85) / 5)); // 72
+    });
+  });
+
+  describe('predictFutureFootprint', () => {
+    it('returns null if there are fewer than 2 history entries', () => {
+      expect(predictFutureFootprint([])).toBeNull();
+      expect(predictFutureFootprint([{ total: 300, date: '2026-01-01' }])).toBeNull();
+    });
+
+    it('makes a linear regression prediction for future carbon emissions', () => {
+      const history = [
+        { total: 100, date: '2026-01-01' },
+        { total: 120, date: '2026-02-01' },
+        { total: 140, date: '2026-03-01' },
+      ];
+      // Index 0: 100, Index 1: 120, Index 2: 140
+      // Next is index 3: prediction should be 160
+      expect(predictFutureFootprint(history)).toBe(160);
+    });
+
+    it('works correctly when totals are computed from individual categories', () => {
+      const history = [
+        { transport: 50, energy: 50, food: 50, shopping: 50, waste: 50, date: '2026-01-01' }, // 250
+        { transport: 60, energy: 60, food: 60, shopping: 60, waste: 60, date: '2026-02-01' }, // 300
+      ];
+      // Index 0: 250, Index 1: 300
+      // Next is index 2: prediction should be 350
+      expect(predictFutureFootprint(history)).toBe(350);
     });
   });
 });
